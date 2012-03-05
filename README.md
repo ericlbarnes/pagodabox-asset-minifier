@@ -11,8 +11,8 @@ Compress js and css files for your application.
 ## Arguments:
 
 * `-t` - Type of asset. (js or css)
-* `-f` - List of files. Example: -f "js/main.js js/plugin.js"
-* `-o` - Output Directory. Example: -o min
+* `-f` - List of files. Example: `-f "js/main.js js/plugin.js"`
+* `-o` - Output Directory. Example: `-o minfolder`
 
 **Note: Output files are named the same as the original.**
 
@@ -20,4 +20,4 @@ Compress js and css files for your application.
 
 	web1
 		after_build:
-			- "bash < <(php minify -t css -f css/style.css -o css/min)"
+			- "php minify -t css -f css/style.css -o css/min"
