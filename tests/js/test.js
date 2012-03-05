@@ -4,7 +4,7 @@ function hello(name) {
 function add_one(argument) {
 	return argument+'_one';
 }
-alert(hello('John Doe'))
+alert(hello('John Doe')
 
 (function( $ ){
 

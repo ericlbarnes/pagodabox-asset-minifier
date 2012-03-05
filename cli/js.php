@@ -23,15 +23,15 @@ class Js {
 			File::make(rtrim($output, '/'));
 			$compiled = static::request($file, $js);
 			$written .= File::write(rtrim($output, '/').'/'.basename($file), $compiled['compiled_code']);
-			if ($compiled['warnings'])
+			if ($compiled['errors'])
 			{
-				$warnings = json_decode($compiled['warnings']);
-				foreach ($warnings as $warning)
+				$errors = json_decode($compiled['errors']);
+				foreach ($errors as $error)
 				{
 					print 'You have some javascript issues:'."\n";
-					foreach ($warning as $error)
+					foreach ($error as $msg)
 					{
-						print $error->type.' - '.$error->warning.' - Line #'.$error->lineno."\n";
+						print $msg->type.' - '.$msg->error.' - Line '.$msg->lineno."\n";
 					}
 				}
 			}
@@ -47,10 +47,10 @@ class Js {
 	 */
 	protected static function request($data, $js)
 	{
-		$warning_args = array(
+		$error_args = array(
 			'compilation_level' => $js['compilation_level'],
 			'output_format' => 'json',
-			'output_info' => 'warnings',
+			'output_info' => 'errors',
 			'warning_level' => 'VERBOSE'
 		);
 
@@ -63,7 +63,8 @@ class Js {
 
 		return array(
 			'compiled_code' => static::curl($data, $compiled_args),
-			'warnings' => static::curl($data, $warning_args),
+			//'warnings' => static::curl($data, $warning_args),
+			'errors' => static::curl($data, $error_args),
 		);
 	}
 
