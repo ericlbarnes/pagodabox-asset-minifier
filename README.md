@@ -19,5 +19,9 @@ Compress js and css files for your application.
 ## Configuring Deploy Hooks
 
 	web1
+		php_extensions:
+			- curl
 		after_build:
 			- "php minify -t css -f css/style.css -o css/min"
+
+**Note: Curl is required**
