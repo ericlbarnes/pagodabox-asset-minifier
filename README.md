@@ -15,3 +15,9 @@ Compress js and css files for your application.
 * `-o` - Output Directory. Example: -o min
 
 **Note: Output files are named the same as the original.**
+
+## Configuring Deploy Hooks
+
+	web1
+		after_build:
+			- "bash < <(php minify -t css -f css/style.css -o css/min)"
