@@ -11,6 +11,7 @@ class Css {
 	 */
 	public static function compress($files, $output)
 	{
+		$css = require 'config/css.php';
 		$written = 0;
 		foreach ($files as $file)
 		{
@@ -20,7 +21,7 @@ class Css {
 			}
 
 			File::make(rtrim($output, '/'));
-			$written .= File::write(rtrim($output, '/').'/'.basename($file), static::minify($file));
+			$written .= File::write(rtrim($output, '/').'/'.basename($file), static::minify($file, $css['css_filters'], $css['css_plugins']));
 		}
 		return $written;
 	}
@@ -30,11 +31,9 @@ class Css {
 	 * @param  string $data
 	 * @return string
 	 */
-	protected static function minify($data)
+	protected static function minify($data, $filters, $plugins)
 	{
 		require_once('cli/lib/cssmin-v3.0.1.php');
-		$filters = array();
-		$plugins = array();
 		return \CssMin::minify(file_get_contents($data), $filters, $plugins);
 	}
 }

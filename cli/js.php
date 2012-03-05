@@ -11,6 +11,7 @@ class Js {
 	 */
 	public static function compress($files, $output)
 	{
+		$js = require 'config/js.php';
 		$written = 0;
 		foreach ($files as $file)
 		{
@@ -20,7 +21,7 @@ class Js {
 			}
 
 			File::make(rtrim($output, '/'));
-			$written .= File::write(rtrim($output, '/').'/'.basename($file), static::curl($file));
+			$written .= File::write(rtrim($output, '/').'/'.basename($file), static::curl($file, $js));
 		}
 		return $written;
 	}
@@ -31,11 +32,11 @@ class Js {
 	 * @param  string $data
 	 * @return mixed
 	 */
-	protected static function curl($data)
+	protected static function curl($data, $js)
 	{
 		// REST API arguments
 		$api_args = array(
-			'compilation_level' => 'ADVANCED_OPTIMIZATIONS',
+			'compilation_level' => $js['compilation_level'],
 			'output_format' => 'text',
 			'output_info' => 'compiled_code'
 		);
