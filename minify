@@ -1,0 +1,28 @@
+#!/usr/bin/php
+<?php
+
+/**
+ * Minify - A simple PagodaBox Minify Script
+ *
+ * @version  1.0.0
+ * @author   Eric Barnes <eric@ericlbarnes.com>
+ * @link     http://ericlbarnes.com
+ */
+if (php_sapi_name() != 'cli')
+{
+	die('You must run from command line');
+}
+
+// --------------------------------------------------------------
+// Setup the cli
+// --------------------------------------------------------------
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 1);
+ini_set('log_errors', 0);
+ini_set('html_errors', 0);
+
+// --------------------------------------------------------------
+// Launch the CLI.
+// --------------------------------------------------------------
+require 'cli/minify.php';
+\Minify\Route::run();
