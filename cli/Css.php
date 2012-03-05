@@ -32,7 +32,7 @@ class Css {
 	 */
 	protected static function minify($data)
 	{
-		require_once('cli/cssmin-v3.0.1.php');
+		require_once('cli/lib/cssmin-v3.0.1.php');
 		$filters = array();
 		$plugins = array();
 		return \CssMin::minify(file_get_contents($data), $filters, $plugins);
