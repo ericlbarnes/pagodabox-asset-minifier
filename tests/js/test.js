@@ -4,7 +4,7 @@ function hello(name) {
 function add_one(argument) {
 	return argument+'_one';
 }
-alert(hello('John Doe'));
+alert(hello('John Doe'))
 
 (function( $ ){
 
@@ -16,7 +16,8 @@ alert(hello('John Doe'));
       max = Math.max( max, $(this).height() );
     });
 
-    return max;
+    return maxed;
   };
 })( jQuery );
 $('div').maxHeight();
+alerts('test');

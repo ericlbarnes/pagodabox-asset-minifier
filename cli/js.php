@@ -11,7 +11,7 @@ class Js {
 	 */
 	public static function compress($files, $output)
 	{
-		$js = require 'config/js.php';
+		$js = require BASE.'config/js.php';
 		$written = 0;
 		foreach ($files as $file)
 		{
@@ -21,7 +21,20 @@ class Js {
 			}
 
 			File::make(rtrim($output, '/'));
-			$written .= File::write(rtrim($output, '/').'/'.basename($file), static::curl($file, $js));
+			$compiled = static::request($file, $js);
+			$written .= File::write(rtrim($output, '/').'/'.basename($file), $compiled['compiled_code']);
+			if ($compiled['warnings'])
+			{
+				$warnings = json_decode($compiled['warnings']);
+				foreach ($warnings as $warning)
+				{
+					print 'You have some javascript issues:'."\n";
+					foreach ($warning as $error)
+					{
+						print $error->type.' - '.$error->warning.' - Line #'.$error->lineno."\n";
+					}
+				}
+			}
 		}
 		return $written;
 	}
@@ -32,24 +45,39 @@ class Js {
 	 * @param  string $data
 	 * @return mixed
 	 */
-	protected static function curl($data, $js)
+	protected static function request($data, $js)
 	{
-		// REST API arguments
-		$api_args = array(
+		$warning_args = array(
 			'compilation_level' => $js['compilation_level'],
-			'output_format' => 'text',
-			'output_info' => 'compiled_code'
+			'output_format' => 'json',
+			'output_info' => 'warnings',
+			'warning_level' => 'VERBOSE'
 		);
 
-		$args = 'js_code=' . urlencode(file_get_contents($data));
-		$args .= http_build_query($api_args);
+		$compiled_args = array(
+			'compilation_level' => $js['compilation_level'],
+			'output_format' => 'text',
+			'output_info' => 'compiled_code',
+			'warning_level' => 'VERBOSE'
+		);
+
+		return array(
+			'compiled_code' => static::curl($data, $compiled_args),
+			'warnings' => static::curl($data, $warning_args),
+		);
+	}
+
+	protected static function curl($data, $args)
+	{
+		$curl_args = 'js_code='.urlencode(file_get_contents($data)).'&';
+		$curl_args .= http_build_query($args);
 
 		// API call using cURL
 		$ch = curl_init();
 		curl_setopt_array($ch, array(
 			CURLOPT_URL => 'http://closure-compiler.appspot.com/compile',
 			CURLOPT_POST => 1,
-			CURLOPT_POSTFIELDS => $args,
+			CURLOPT_POSTFIELDS => $curl_args,
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_HEADER => 0,
 			CURLOPT_FOLLOWLOCATION => 0

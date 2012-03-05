@@ -21,7 +21,7 @@ class Route {
 			die('The -o ouput directory is required');
 		}
 
-		require_once('cli/File.php');
+		require_once(BASE.'cli/File.php');
 
 		$files = explode(' ', $opts['f']);
 
@@ -29,13 +29,13 @@ class Route {
 		if ($type == 'js')
 		{
 			static::__('Starting compressing js files');
-			require_once('cli/js.php');
+			require_once(BASE.'cli/js.php');
 			$compressed = Js::compress($files, $opts['o']);
 		}
 		else
 		{
 			static::__('Starting compressing css files');
-			require_once('cli/css.php');
+			require_once(BASE.'cli/css.php');
 			$compressed = Css::compress($files, $opts['o']);
 		}
 

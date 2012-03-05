@@ -11,7 +11,7 @@ class Css {
 	 */
 	public static function compress($files, $output)
 	{
-		$css = require 'config/css.php';
+		$css = require BASE.'config/css.php';
 		$written = 0;
 		foreach ($files as $file)
 		{
@@ -33,7 +33,7 @@ class Css {
 	 */
 	protected static function minify($data, $filters, $plugins)
 	{
-		require_once('cli/lib/cssmin-v3.0.1.php');
+		require_once(BASE.'cli/lib/cssmin-v3.0.1.php');
 		return \CssMin::minify(file_get_contents($data), $filters, $plugins);
 	}
 }
