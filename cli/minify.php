@@ -35,7 +35,7 @@ class Route {
 		else
 		{
 			static::__('Starting compressing css files');
-			require_once(BASE.'cli/css.php');
+			require_once(BASE.'cli/Css.php');
 			$compressed = Css::compress($files, $opts['o']);
 		}
 
