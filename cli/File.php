@@ -12,10 +12,19 @@ class File {
 	{
 		return file_put_contents($path, $data);
 	}
+	
+	/**
+	 * Read contents to a file
+	 * @param  string $path
+	 * @return string
+	 */
+	public static function read($path)
+	{
+		return file_get_contents($path);
+	}
 
 	/**
 	 * Make a new directory
-	 *
 	 * @param  string $dir
 	 * @param  int $permission
 	 * @param  bool $nested
@@ -35,4 +44,36 @@ class File {
 
 		return true;
 	}
+	
+	/**
+	 * Append data to the end of a file
+	 * @param  string $path
+	 * @param  string $data
+	 * @return bool
+	 */
+	public static function append($path, $data)
+	{
+		$handle = fopen($path, 'a+');
+		fwrite($handle, $data);
+		return fclose($handle);
+	}
+	
+	/**
+	 * Concatenate a bunch of files
+	 * @param  array $files
+	 * @param  string $output
+	 * @param  string $extension
+	 * @return bool
+	 */
+	public static function concatenate($files, $output, $extension)
+	{
+		foreach ($files as $file)
+		{
+			$data = self::read($output.'/'.basename($file));
+			self::append($output.'/min.'.$extension, $data);
+		}
+		
+		return true;
+	}
+
 }

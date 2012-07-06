@@ -8,7 +8,7 @@ class Route {
 	 */
 	public static function run()
 	{
-		$opts = getopt('t:f:o:');
+		$opts = getopt('t:f:o:c');
 		$type = $opts['t'] ?: 'js';
 
 		if ( ! $opts['f'])
@@ -38,9 +38,18 @@ class Route {
 			require_once(BASE.'cli/Css.php');
 			$compressed = Css::compress($files, $opts['o']);
 		}
-
+		
 		static::__('Finishing compressing files. '.$compressed.' bytes written');
-		return $compressed;
+		
+		// Do more good stuff
+		if (isset($opts['c']))
+		{
+			static::__('Starting concatenating '.$type.' files');
+			File::concatenate($files, $opts['o'], $type);
+		}
+
+		static::__('Finishing concatenating '.count($files).' files');
+		return true;
 	}
 
 	/**
