@@ -1,9 +1,6 @@
 function hello(name) {
 	return add_one('Hello'+name);
 }
-function add_one(argument) {
-	return argument+'_one';
-}
 alert(hello('John Doe'));
 
 (function( $ ){
